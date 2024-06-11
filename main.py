@@ -101,7 +101,7 @@ class SentimentApp:
             self.model = KnnModel()
             self.model.fit(X_train_knn, y_train_knn)
             self.save_vectorizer(self.vectorizer, 'vectorizer.pkl')
-            self.model.save_model('knn_model.pkl')
+            # self.model.save_model('knn_model.pkl')
         elif self.model_type == "CNN":
             self.model = SentimentModel()
             self.model.compile_model()
@@ -125,7 +125,7 @@ class SentimentApp:
             sentiment = "positive" if prediction > 0.5 else "negative"
         elif self.model_type == "KNN":
             processed_text = self.vectorizer.transform([text])
-            prediction = self.model.predict(processed_text)
+            prediction = self.model.predict(text ,self.vectorizer)
             sentiment = "positive" if prediction > 0.5 else "negative"
 
         self.result_label.config(text=f"Sentiment: {sentiment}")

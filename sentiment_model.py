@@ -26,6 +26,7 @@ class SentimentModel:
 
     def train_model(self, X_train, y_train, X_val, y_val, epochs=10, batch_size=32):
         self.model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, validation_data=(X_val, y_val))
+        self.save_model('sentiment_model.h5')  # Save model here
 
     def save_model(self, path):
         self.model.save(path)
