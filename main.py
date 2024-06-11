@@ -64,7 +64,7 @@ class SentimentApp:
             messagebox.showerror("Error", "Please choose a model first.")
             return
 
-        model_path = filedialog.askopenfilename(filetypes=[("H5 files", "*.h5"), ("Pickle files", "*.pkl")])
+        model_path = filedialog.askopenfilename(filetypes=[("H5 files", "*.h5"), ("Pickle files", "*.pkl"), ("Joblib", "*.joblib")])
         if not model_path:
             return
 
@@ -75,7 +75,7 @@ class SentimentApp:
             try:
                 self.vectorizer = self.load_vectorizer('vectorizer.pkl')
                 self.model = KnnModel()
-                self.model.load_model(model_path)
+                self.model.load(model_path)
             except FileNotFoundError:
                 messagebox.showerror("Error", "Vectorizer file not found. Train the model first.")
 
@@ -101,7 +101,7 @@ class SentimentApp:
             self.model = KnnModel()
             self.model.fit(X_train_knn, y_train_knn)
             self.save_vectorizer(self.vectorizer, 'vectorizer.pkl')
-            # self.model.save_model('knn_model.pkl')
+            self.model.save('knn_model.joblib')
         elif self.model_type == "CNN":
             self.model = SentimentModel()
             self.model.compile_model()
