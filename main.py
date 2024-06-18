@@ -86,7 +86,7 @@ class SentimentApp:
             messagebox.showerror("Error", "Please choose a model first.")
             return
 
-        data_loader = DataLoader(dataset_path='IMDB Dataset.csv')
+        data_loader = DataLoader(dataset_path='DatasetPL.csv')
         reviews, sentiments = data_loader.load_data()
 
         translated_reviews = [review for review in reviews]
@@ -100,6 +100,7 @@ class SentimentApp:
             X_train_knn, X_val_knn, y_train_knn, y_val_knn = train_test_split(X_knn, y, test_size=0.2, random_state=42)
             self.model = KnnModel()
             self.model.fit(X_train_knn, y_train_knn)
+            self.report(X_val_knn, y_val_knn)
             self.save_vectorizer(self.vectorizer, 'vectorizer.pkl')
             self.model.save('knn_model.joblib')
         elif self.model_type == "CNN":
@@ -140,6 +141,10 @@ class SentimentApp:
     def save_vectorizer(self, vectorizer, path):
         with open(path, 'wb') as f:
             pickle.dump(vectorizer, f)
+
+    def report(self, X_val, y_val):
+        if self.model_type == "KNN":
+            self.model.report(X_val, y_val)
 
 if __name__ == "__main__":
     root = tk.Tk()
